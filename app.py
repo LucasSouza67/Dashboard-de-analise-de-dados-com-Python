@@ -3,7 +3,6 @@ import pandas as pd
 import plotly.express as px
 
 # --- Configuração da Página ---
-# Define o título da página, o ícone e o layout para ocupar a largura inteira.
 st.set_page_config(
     page_title="Dashboard de Salários na Área de Dados",
     page_icon="📊",
@@ -11,7 +10,6 @@ st.set_page_config(
 )
 
 # --- Carregamento dos dados ---
-#df = pd.read_csv("https://raw.githubusercontent.com/vqrca/dashboard_salarios_dados/refs/heads/main/dados-imersao-final.csv")
 df = pd.read_csv("https://raw.githubusercontent.com/LucasSouza67/Dashboard-de-analise-de-dados-com-Python/refs/heads/main/dados_projeto.csv")
 
 # --- Barra Lateral (Filtros) ---
@@ -34,7 +32,6 @@ tamanhos_disponiveis = sorted(df['tamanho_empresa'].unique())
 tamanhos_selecionados = st.sidebar.multiselect("Tamanho da Empresa", tamanhos_disponiveis, default=tamanhos_disponiveis)
 
 # --- Filtragem do DataFrame ---
-# O dataframe principal é filtrado com base nas seleções feitas na barra lateral.
 df_filtrado = df[
     (df['ano'].isin(anos_selecionados)) &
     (df['senioridade'].isin(senioridades_selecionadas)) &
@@ -43,7 +40,7 @@ df_filtrado = df[
 ]
 
 # --- Conteúdo Principal ---
-st.title("🎲 Dashboard de Análise de Salários na Área de Dados")
+st.title("Dashboard de Análise de Salários na Área de Dados")
 st.markdown("Explore os dados salariais na área de dados nos últimos anos. Utilize os filtros à esquerda para refinar sua análise.")
 
 # --- Métricas Principais (KPIs) ---
@@ -65,7 +62,7 @@ col4.metric("Cargo mais frequente", cargo_mais_frequente)
 
 st.markdown("---")
 
-# --- Análises Visuais com Plotly ---
+# --- Análises Visuais utilizando Plotly ---
 st.subheader("Gráficos")
 
 col_graf1, col_graf2 = st.columns(2)
@@ -121,7 +118,7 @@ with col_graf3:
 
 with col_graf4:
     if not df_filtrado.empty:
-        df_ds = df_filtrado[df_filtrado['cargo'] == 'Cientista de Dados'] # --- alterar aqui ---
+        df_ds = df_filtrado[df_filtrado['cargo'] == 'Cientista de Dados'] 
         media_ds_pais = df_ds.groupby('residencia_iso3')['usd'].mean().reset_index()
         grafico_paises = px.choropleth(media_ds_pais,
             locations='residencia_iso3',
@@ -136,4 +133,5 @@ with col_graf4:
 
 # --- Tabela de Dados Detalhados ---
 st.subheader("Dados Detalhados")
+
 st.dataframe(df_filtrado)
